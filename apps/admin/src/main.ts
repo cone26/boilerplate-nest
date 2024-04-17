@@ -9,4 +9,5 @@ async function bootstrap() {
   await adminServer.init();
   await adminServer.run();
 }
+
 bootstrap();
