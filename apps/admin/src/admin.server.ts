@@ -16,7 +16,7 @@ export class AdminServer {
    * execute server
    */
   async run() {
-    await this.app.listen(3000);
+    await this.app.listen(process.env.SERVER_PORT);
   }
 
   /**
