@@ -17,7 +17,7 @@ export class AdminServer {
    */
   async run() {
     //TODO: hostname?
-    await this.app.listen(process.env.SERVER_PORT);
+    await this.app.listen(process.env.SERVER_PORT, '0.0.0.0');
   }
 
   /**

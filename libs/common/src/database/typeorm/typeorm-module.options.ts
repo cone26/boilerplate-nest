@@ -2,6 +2,21 @@ import { DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import * as process from 'process';
 
+export function getGameDbIdFromUserId(userId: number): number {
+  const enableDbList = Object.keys(gameTypeOrmModuleOptions).map((it) =>
+    Number(it),
+  );
+
+  const shardId = enableDbList.length;
+  const dbIndex = userId % shardId;
+
+  return enableDbList[dbIndex];
+}
+
+export function getDatabaseByGameDbId(gameDbId: number): string {
+  return gameTypeOrmModuleOptions[gameDbId].database;
+}
+
 export const defaultTypeOrmOptions: DataSourceOptions = {
   type: 'mysql',
   namingStrategy: new SnakeNamingStrategy(),
@@ -16,24 +31,51 @@ export const defaultTypeOrmOptions: DataSourceOptions = {
   // logging: ['query']
 };
 
-export const adminTypeOrmOptions: DataSourceOptions = {
+export const commonTypeOrmOptions: DataSourceOptions = {
   ...defaultTypeOrmOptions,
-  host: process.env.ADMIN_DB_HOST,
-  port: Number(process.env.ADMIN_DB_PORT),
-  username: process.env.ADMIN_DB_USER,
-  password: process.env.ADMIN_DB_PW,
-  database: process.env.ADMIN_DB_NAME,
+  host: process.env.COMMON_DB_HOST,
+  port: Number(process.env.COMMON_DB_PORT),
+  username: process.env.COMMON_DB_USER,
+  password: process.env.COMMON_DB_PW,
+  database: process.env.COMMON_DB_NAME,
   entities: ['dist/libs/dao/src/admin/**/*.entity.!(js.map){,+(ts,js)}'],
-  synchronize: false, // Already have data in Db, if not -> true
+  synchronize:
+    process.env.COMMON_SYNCHRONIZE &&
+    JSON.parse(process.env.COMMON_DB_SYNCHRONIZE),
 };
 
-export const gameTypeOrmOptions: DataSourceOptions = {
+export const gameBaseTypeOrmModuleOptions = {
   ...defaultTypeOrmOptions,
-  host: process.env.GAME_DB_HOST,
-  port: Number(process.env.GAME_DB_PORT),
-  username: process.env.GAME_DB_USER,
-  password: process.env.GAME_DB_PW,
-  database: process.env.GAME_DB_NAME,
   entities: ['dist/libs/dao/src/game/**/*.entity.!(js.map){,+(ts,js)}'],
-  synchronize: false, // Already have data in Db, if not -> true
 };
+
+export const gameTypeOrmModuleOptions = {
+  100: {
+    ...gameBaseTypeOrmModuleOptions,
+    host: process.env.GAME00_DB_HOST,
+    port: Number(process.env.GAME00_DB_PORT),
+    username: process.env.GAME00_DB_USER,
+    password: process.env.GAME00_DB_PW,
+    database: process.env.GAME00_DB_NAME,
+    entities: ['dist/libs/dao/src/admin/**/*.entity.!(js.map){,+(ts,js)}'],
+    synchronize:
+      process.env.GAME00_SYNCHRONIZE &&
+      JSON.parse(process.env.GAME00_DB_SYNCHRONIZE),
+  },
+  101: {
+    ...gameBaseTypeOrmModuleOptions,
+    host: process.env.GAME01_DB_HOST,
+    port: Number(process.env.GAME01_DB_PORT),
+    username: process.env.GAME01_DB_USER,
+    password: process.env.GAME01_DB_PW,
+    database: process.env.GAME01_DB_NAME,
+    entities: ['dist/libs/dao/src/admin/**/*.entity.!(js.map){,+(ts,js)}'],
+    synchronize:
+      process.env.GAME01_SYNCHRONIZE &&
+      JSON.parse(process.env.GAME01_DB_SYNCHRONIZE),
+  },
+};
+
+export const gameShardDatabases: string[] = Object.values(
+  gameTypeOrmModuleOptions,
+).map((it) => it.database);
