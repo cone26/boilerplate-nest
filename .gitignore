@@ -39,3 +39,4 @@ lerna-debug.log*
 .env.test
 config/.game.test.env
 config/.*.test.env
+config/.*.dev1.env
