@@ -7,6 +7,7 @@ export class AdminController {
 
   @Get()
   getHello() {
-    return this.adminService.health();
+    return 'Hello';
+    // return this.adminService.health();
   }
 }
