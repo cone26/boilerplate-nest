@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AdminService {
-  getHello(): string {
-    return 'Hello World!';
+  health() {
+    return { environment: process.env.NODE_ENV };
   }
 }
