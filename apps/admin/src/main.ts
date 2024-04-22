@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AdminModule } from './admin.module';
 import { AdminServer } from './admin.server';
 
-async function bootstrap() {
+async function adminServer(): Promise<void> {
   const app = await NestFactory.create(AdminModule);
 
   const adminServer = new AdminServer(app);
@@ -10,4 +10,4 @@ async function bootstrap() {
   await adminServer.run();
 }
 
-bootstrap();
+void adminServer();

@@ -7,7 +7,7 @@ export class GameServer {
   /**
    * initialize server
    */
-  async init() {
+  init(): void {
     this.app.setGlobalPrefix('game');
     this._initializeSwagger();
   }
@@ -15,7 +15,7 @@ export class GameServer {
   /**
    * execute server
    */
-  async run() {
+  async run(): Promise<void> {
     await this.app.listen(3001);
   }
 

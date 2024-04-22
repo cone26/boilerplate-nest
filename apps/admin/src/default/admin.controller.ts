@@ -3,11 +3,8 @@ import { ResponseEntity } from '@libs/common/network/response-entity';
 
 @Controller()
 export class AdminController {
-  constructor() {}
-
-  @Get()
-  getHello(): ResponseEntity<unknown> {
-    return 'Hello';
-    // return ResponseEntity.ok().build();
+  @Get('health')
+  health(): ResponseEntity<unknown> {
+    return ResponseEntity.ok().build();
   }
 }

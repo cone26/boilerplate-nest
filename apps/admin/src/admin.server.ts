@@ -7,7 +7,7 @@ export class AdminServer {
   /**
    * initialize server
    */
-  async init() {
+  init(): void {
     this.app.setGlobalPrefix('admin');
     this._initializeSwagger();
   }
@@ -15,9 +15,9 @@ export class AdminServer {
   /**
    * execute server
    */
-  async run() {
-    //TODO: hostname?
-    await this.app.listen(process.env.SERVER_PORT);
+  async run(): Promise<void> {
+    //TODO: hostname
+    await this.app.listen(process.env.SERVER_PORT, '0.0.0.0');
   }
 
   /**
