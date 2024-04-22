@@ -1,13 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
-import { AdminService } from './admin.service';
+import { ResponseEntity } from '@libs/common/network/response-entity';
 
 @Controller()
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor() {}
 
   @Get()
-  getHello() {
+  getHello(): ResponseEntity<unknown> {
     return 'Hello';
-    // return this.adminService.health();
+    // return ResponseEntity.ok().build();
   }
 }

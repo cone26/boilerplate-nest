@@ -1,61 +1,51 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class Response {
-  @ApiProperty({ example: 0 })
-  private readonly code: number;
+class BodyBuilder {
+  private readonly _code: number;
+  private _body: any | any[];
 
-  @ApiProperty({ example: {}, required: false })
-  private readonly data?: any | any[];
+  constructor(code: number) {
+    this._code = code;
+  }
 
-  @ApiProperty({ example: {}, required: false })
-  private readonly payload?: any | any[];
+  body<T>(body: T): ResponseEntity<T>;
+  body<T>(body: T[]): ResponseEntity<T[]>;
+  body<T>(body: T | T[]): ResponseEntity<T | T[]> {
+    this._body = body;
+    return new ResponseEntity<T>(this._code, this._body);
+  }
 
-  @ApiProperty({ example: '', required: false })
-  private readonly message?: string;
-
-  constructor(
-    code: number,
-    data: any | any[],
-    payload: any | any[],
-    message: string,
-  ) {
-    this.code = code;
-    this.data = data;
-    this.payload = payload;
-    this.message = message;
+  build<T>(): ResponseEntity<T> {
+    return new ResponseEntity(this._code, this._body);
   }
 }
 
 export class ResponseEntity<T> {
-  @ApiProperty({ example: 0 })
-  private code: number;
+  @ApiProperty() private code: number;
+  @ApiPropertyOptional() private data?: T | T[];
+  @ApiPropertyOptional() private message?: string;
+  @ApiPropertyOptional() private payLoad?: object;
 
-  @ApiProperty({ required: false })
-  private data: T | T[];
-
-  @ApiProperty({ example: {}, required: false })
-  private payload?: object;
-
-  @ApiProperty({ example: '', required: false })
-  private message?: string;
-
-  public ok(): ResponseEntity<T> {
-    this.code = 0;
-    return this;
-  }
-
-  public error(code = 999, message = 'Error'): ResponseEntity<T> {
+  constructor(
+    code: number,
+    body?: T | T[],
+    message?: string,
+    payLoad?: object,
+  ) {
     this.code = code;
+    this.data = body;
     this.message = message;
-    return this;
+    this.payLoad = payLoad;
   }
 
-  public body(data: T | T[]): ResponseEntity<T> {
-    this.data = data;
-    return this;
+  static ok(): BodyBuilder;
+  static ok<T>(body: T): ResponseEntity<T>;
+  static ok<T>(body: T[]): ResponseEntity<T[]>;
+  static ok<T>(body?: T | T[]): ResponseEntity<T | T[]> | BodyBuilder {
+    return body ? new ResponseEntity(0, body) : new BodyBuilder(0);
   }
 
-  build(): Response {
-    return new Response(this.code, this.data, this.payload, this.message);
+  static error<T>(code = 99999, message = 'Unknown Error'): ResponseEntity<T> {
+    return new ResponseEntity<T>(code, undefined, message);
   }
 }
