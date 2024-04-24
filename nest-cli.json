@@ -4,8 +4,8 @@
   "sourceRoot": "apps/admin/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
-    "tsConfigPath": "apps/boilerplate-nest/tsconfig.app.json"
+    "webpack": false,
+    "tsConfigPath": "apps/admin/tsconfig.app.json"
   },
   "monorepo": true,
   "root": "apps/admin",
