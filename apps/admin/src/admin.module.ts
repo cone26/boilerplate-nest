@@ -1,13 +1,18 @@
 import { Module } from '@nestjs/common';
 import { AdminServerConfig } from './config/admin-server-config';
-import { TypeOrmExModule } from '@libs/common/database/typeorm/typeorm-ex.module';
-import { commonTypeOrmModuleOptions } from '@libs/common/database/typeorm/typeorm-module.options';
 import { AdminController } from './default/admin.controller';
+import { CommonModule } from '../../../libs/dao/common/common.module';
 
 @Module({
   imports: [
+    /**
+     * config
+     */
     AdminServerConfig,
-    TypeOrmExModule.forRoot(commonTypeOrmModuleOptions),
+    /**
+     * database connection
+     */
+    CommonModule,
   ],
   controllers: [AdminController],
   providers: [],
