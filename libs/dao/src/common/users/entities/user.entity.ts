@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { AbstractEntity } from '@libs/common/database/abstract.entity';
+import { AbstractEntity } from '@libs/common/database/typeorm/abstract.entity';
 import { User } from '../interfaces/user.interface';
 
 @Entity('User')
