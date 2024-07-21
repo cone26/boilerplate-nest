@@ -17,3 +17,4 @@
 - [Overloading in TypeScript](https://www.notion.so/cone-s-page/TypeScript-Overloading-3cbb6271a4914414b620e9412a654eaf?pvs=4)
 - [Union Type in TypeScript](https://www.notion.so/cone-s-page/TypeScript-Union-Type-347694555ea146a7a20b22d2f03a222d)
 - [pnpm and the other package managers](https://www.notion.so/cone-s-page/pnpm-adb386f5ca7645b9a786223e8b1d6564)
+- [What is `super()`?](https://www.notion.so/cone-s-page/super-6d782a91401045738211a70f67f35784)
